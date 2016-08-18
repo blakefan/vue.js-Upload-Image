@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>vue.js 简单上传图片</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+    #app {
+        text-align: center;
+    }
+    
+    img {
+        width: 10%;
+        margin: auto;
+        display: block;
+        margin-bottom: 10px;
+    }
+    
+    button {}
+    </style>
+    <script src="//cdn.bootcss.com/vue/1.0.23/vue.min.js"></script>
+    <script src="//cdn.bootcss.com/jquery/2.2.2/jquery.min.js"></script>
+</head>
+
+<body>
+        <div id="app">
+            <div v-if="!image">
+                <h2>选择图片</h2>
+                <input type="file" @change="onFileChange"> 
+
+            </div>
+            <div v-else>
+                <img :src="image" />
+                <button @click="removeImage">移除图片</button>
+                <button @click='uploadImage' >上传</button>
+            </div>
+           
+        </div>
+    <script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data: {
+            image: ''
+        },
+        methods: {
+            onFileChange(e) {
+                var files = e.target.files || e.dataTransfer.files;
+                if (!files.length)
+                    return;
+                this.createImage(files[0]);
+            },
+            createImage(file) {
+                var image = new Image();
+                var reader = new FileReader();
+                var vm = this;
+                reader.onload = (e) => {
+                    vm.image = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            },
+            removeImage: function(e) {
+                this.image = '';
+            },
+            uploadImage: function() {
+                var obj = {};
+                obj.image=this.image
+                $.ajax({
+                    type: 'post',
+                    url: "upload.php",
+                    data: obj,
+                    dataType: "json",
+                    success: function(data) {
+                        if(data.status){
+                        	alert(data.msg);
+                        	return false;
+                        }else{
+                        	alert(data.msg);
+                        	return false;
+                        }
+                    }
+                });
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>
