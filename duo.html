@@ -15,7 +15,6 @@
         margin-bottom: 10px;
     }
     ul {list-style:none;margin:0px;} 
-    ul li {float:left;} 
     button {}
     </style>
     <script src="//cdn.bootcss.com/vue/1.0.23/vue.min.js"></script>
@@ -35,7 +34,8 @@
                      <img :src="image" @click='delImage(key)' />
                   </li>
                </ul>
-                <button @click="removeImage">移除图片</button>
+                <button @click="removeImage">移除全部图片</button>
+                <button >移除单个图片请点击图片</button>
                 <button @click='uploadImage' >上传</button>
             </div>
         </div>
