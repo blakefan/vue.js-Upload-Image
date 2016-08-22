@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>vue.js 简单多图上传图片</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+    #app {
+        text-align: center;
+    }
+    
+    img {
+        width: 10%;
+        margin: auto;
+        display: block;
+        margin-bottom: 10px;
+    }
+    
+    button {}
+    </style>
+    <script src="//cdn.bootcss.com/vue/1.0.23/vue.min.js"></script>
+    <script src="//cdn.bootcss.com/jquery/2.2.2/jquery.min.js"></script>
+</head>
+<body>
+        <div id="app">
+            <div v-if="!images.length">
+                <h2>选择图片</h2>
+                <a id='addPic' href="" v-on:click="addPic">添加图片 </a>
+                <input type="file" @change="onFileChange" multiple style="display: none;">
+            </div>
+            <div v-else>
+               <!--  <img :src="image" /> -->
+               <ul v-for="image in images">
+                    <img :src="{{image}}" />
+               </ul>
+                <button @click="removeImage">移除图片</button>
+                <button @click='uploadImage' >上传</button>
+            </div>
+        </div>
+    <script type="text/javascript">
+    //Vue.config.debug = true;// 开启vue 调试功能
+    new Vue({
+        el: '#app',
+        data: {
+            images: []
+        },
+        methods: {
+            addPic(e){
+                e.preventDefault();
+                $('input[type=file]').trigger('click');
+                return false;
+            },
+            onFileChange(e) {
+                var files = e.target.files || e.dataTransfer.files;
+                if (!files.length)return; 
+                this.createImage(files);
+
+            },
+            createImage(file) {
+                if(typeof FileReader==='undefined'){
+                    alert('您的浏览器不支持图片上传，请升级您的浏览器');
+                    return false;
+                }
+                var image = new Image();         
+                var vm = this;
+                var leng=file.length;
+                for(var i=0;i<leng;i++){
+                    var reader = new FileReader();
+                    reader.onload = (e) => {
+                    vm.images.push(e.target.result);                             
+                    };
+                    reader.readAsDataURL(file[i]);                     
+                }
+                console.log(vm.images);
+                  
+            },
+            removeImage: function(e) {
+                this.images = [];
+            },
+            uploadImage: function() {
+                var obj = {};
+                obj.images=this.images
+                $.ajax({
+                    type: 'post',
+                    url: "upload.php",
+                    data: obj,
+                    dataType: "json",
+                    success: function(data) {
+                        if(data.status){
+                            alert(data.msg);
+                            return false;
+                        }else{
+                            alert(data.msg);
+                            return false;
+                        }
+                    }
+                });
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>
