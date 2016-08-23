@@ -1,24 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>vue.js 简单上传图片</title>
+    <title>vue.js 简单多图上传图片</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style type="text/css">
-    #app {
-        text-align: center;
-    }
     
+    ul { list-style: none outside none; margin:0; padding: 0; }
+    li { margin: 0 10px; display: inline; }
+    #app{
+      overflow: hidden;
+      text-align: center;
+      margin-top: 10%;
+    }
     img {
-        width: 10%;
+        width: 100px;
+        height: 100px;
         margin: auto;
-        display: block;
+        display: inline;
         margin-bottom: 10px;
     }
-    ul {list-style:none;margin:0px;} 
-    button {}
     </style>
     <script src="//cdn.bootcss.com/vue/1.0.23/vue.min.js"></script>
     <script src="//cdn.bootcss.com/jquery/2.2.2/jquery.min.js"></script>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
         <div id="app">
@@ -28,14 +42,16 @@
                 <input type="file" @change="onFileChange" multiple style="display: none;">
             </div>
             <div v-else>
-               <!--  <img :src="image" /> -->
                <ul>
                   <li v-for="(key,image) in images">
+                    
                      <img :src="image" @click='delImage(key)' />
+                     <a href="#" style="position: absolute;" @click='delImage(key)'>
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </a>
                   </li>
                </ul>
                 <button @click="removeImage">移除全部图片</button>
-                <button >移除单个图片请点击图片</button>
                 <button @click='uploadImage' >上传</button>
             </div>
         </div>
