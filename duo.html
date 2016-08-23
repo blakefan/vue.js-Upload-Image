@@ -36,12 +36,13 @@
 </head>
 <body>
         <div id="app">
-            <div v-if="!images.length">
+
+            <div style="margin-bottom: 20px">
                 <h2>选择图片</h2>
                 <a id='addPic' href="" v-on:click="addPic">添加图片 </a>
                 <input type="file" @change="onFileChange" multiple style="display: none;">
             </div>
-            <div v-else>
+            <div v-if="images.length >0">
                <ul>
                   <li v-for="(key,image) in images">
                     
